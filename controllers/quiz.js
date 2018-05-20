@@ -207,7 +207,7 @@ exports.randomcheck = (req, res, next) => {
     }
     else{
         req.session.toBeResolved === undefined;
-        res.render('random_result', {
+        res.render('quizzes/random_result', {
             answer: answer,
             score: req.session.score,
             result: result
