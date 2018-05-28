@@ -106,7 +106,7 @@ exports.edit = (req, res, next) => {
 
 };
 
-exports.update = (req, res, next){
+exports.update = (req, res, next) => {
 
     const {
         tip
@@ -129,4 +129,4 @@ exports.update = (req, res, next){
         req.flash('error', 'Error editing the Tip: ' + error.message);
         next(error);
     });
-}
+};
