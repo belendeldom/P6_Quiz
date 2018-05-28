@@ -116,7 +116,7 @@ exports.update = (req, res, next){
     tip.accepted = false;
 
     tip.save({fields: ["text", "accepted"]})
-    .then(quiz => {
+    .then(tip => {
         req.flash('success', 'Tip edited successfully.');
         res.redirect('/quizzes/' + req.params.quizId);
     })
