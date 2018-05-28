@@ -228,3 +228,65 @@ exports.check = (req, res, next) => {
         answer
     });
 };
+
+exports.randomplay = (req, res, next) => {
+
+    if (req.session.toBeResolved === undefined) {
+        req.session.score = 0;
+        models.quiz.findAll()
+            .then(quizzes => {
+                req.session.toBeResolved = quizzes;
+                const azar = Math.floor(Math.random() * req.session.toBeResolved.length);
+                const quiz = req.session.toBeResolved[azar];
+                req.session.toBeResolved.splice(azar, 1);
+                const score = req.session.score;
+                res.render('quizzes/random_play', {
+                    quiz: quiz,
+                    score: score
+                })
+            }).catch(error => next(error));
+    } else {
+        const azar = Math.floor(Math.random() * req.session.toBeResolved.length);
+        const quiz = req.session.toBeResolved[azar];
+        req.session.toBeResolved.splice(azar, 1);
+        const score = req.session.score;
+        res.render("quizzes/random_play", {
+            quiz: quiz,
+            score: score
+        });
+    };
+};
+
+exports.randomcheck = (req, res, next) => {
+    
+    const {quiz, query} = req;
+
+    const answer = query.answer || "";
+    const result = answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim();
+
+    if(result){
+        req.session.score++;
+        if(req.session.toBeResolved.length === 0){
+            req.session.toBeResolved === undefined;
+            res.render('quizzes/random_nomore', {
+                score: req.session.score
+            })
+        }
+        else{
+            res.render('quizzes/random_result', {
+                answer: answer,
+                score: req.session.score,
+                result: result
+            })
+        }
+    }
+    else{
+        req.session.toBeResolved === undefined;
+        res.render('quizzes/random_result', {
+            answer: answer,
+            score: req.session.score,
+            result: result
+        })
+    }
+}
+
