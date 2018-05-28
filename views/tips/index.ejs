@@ -15,6 +15,14 @@
 
                 <%= tip.author.username %>
 
+                <% if (isAdmin || isTipAuthor) { %>
+
+                    <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>/edit">
+                        <button>Edit</button>
+                    </a>
+
+                <% } %>
+
                 <% if (!accepted && (isAdmin || isQuizAuthor)) { %>
 
                     <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>/accept?_method=PUT">
@@ -23,7 +31,7 @@
 
                 <% } %>
 
-                <% if (isAdmin || isQuizAuthor) { %>
+                <% if (isAdmin || isQuizAuthor || isTipAuthor) { %>
 
                     <a href="/quizzes/<%= quizId %>/tips/<%= tip.id %>?_method=DELETE">
                         <button>Delete</button>
